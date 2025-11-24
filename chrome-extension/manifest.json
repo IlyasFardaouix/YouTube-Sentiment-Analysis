@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Sentiment Analysis",
+  "version": "1.0",
+  "description": "Analyze sentiment of YouTube comments",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "http://127.0.0.1:8000/*",
+    "https://*.hf.space/*",
+    "https://has1elb-youtube-sentiment-analysis.hf.space/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/watch*"],
+      "js": ["content.js"]
+    }
+  ]
+}

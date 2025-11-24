@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YouTube Sentiment</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>YouTube Sentiment</h1>
+      <button id="analyzeBtn">Analyze Comments</button>
+
+      <div id="loading" class="hidden">
+        <div class="spinner"></div>
+        <p>Analyzing...</p>
+      </div>
+
+      <div id="results" class="hidden">
+        <div class="stats-grid">
+          <div class="stat-card positive">
+            <span class="label">Positive</span>
+            <span class="value" id="posPct">0%</span>
+          </div>
+          <div class="stat-card neutral">
+            <span class="label">Neutral</span>
+            <span class="value" id="neuPct">0%</span>
+          </div>
+          <div class="stat-card negative">
+            <span class="label">Negative</span>
+            <span class="value" id="negPct">0%</span>
+          </div>
+        </div>
+        <p class="total-count">
+          Analyzed <span id="totalCount">0</span> comments
+        </p>
+
+        <div class="comments-list" id="commentsList">
+          <!-- Comments will be inserted here -->
+        </div>
+      </div>
+
+      <div id="error" class="hidden"></div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>
