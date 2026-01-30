@@ -12,7 +12,8 @@ class CommentBatch(BaseModel):
 
 class Prediction(BaseModel):
     id: str
-    sentiment: int  # -1, 0, 1
+    text: str  # Ajout du texte pour l'affichage
+    sentiment: int  # -1 (négatif), 0 (neutre), 1 (positif)
     confidence: float
 
 class BatchPredictionResponse(BaseModel):
