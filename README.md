@@ -1,78 +1,162 @@
-# YouTube Sentiment Analysis MLOps Project
+# YouTube Sentiment Analysis - MLOps Project
 
 [![GitHub](https://img.shields.io/badge/GitHub-TALEB7-blue)](https://github.com/TALEB7/YouTube-Sentiment-Analysis)
 
-## Description
+## 📋 Description
 
-This project implements a complete MLOps pipeline for analyzing the sentiment of YouTube comments. It consists of a Machine Learning model trained on Reddit data, a FastAPI backend, and a Chrome Extension for the user interface.
+This project implements a complete MLOps pipeline to analyze the sentiment of YouTube comments. It includes:
+- A Machine Learning model (Logistic Regression with TF-IDF) trained on Reddit data
+- A FastAPI backend API to serve the model
+- A Chrome extension for the user interface
 
-## Architecture
+This is a project done as part of an MLOps course, showing how to put an ML model into production.
 
-- **ML Engine**: Logistic Regression with TF-IDF, trained on Reddit Sentiment dataset.
-- **Backend**: FastAPI serving the model with `/predict_batch` endpoint.
-- **Frontend**: Chrome Extension injecting content scripts to extract comments and displaying analysis in a popup.
-- **Deployment**: Dockerized application ready for Hugging Face Spaces.
+## 🏗️ Architecture
 
-## Installation
+The project is organized into several components:
+
+- **ML Engine** (`src/models/`): Sentiment classification model (Logistic Regression + TF-IDF)
+- **Data Processing** (`src/data/`): Scripts to download and process data
+- **Backend API** (`src/api/`): FastAPI with `/predict_batch` endpoint
+- **Chrome Extension** (`chrome-extension/`): Extension to extract and analyze YouTube comments
+- **Deployment**: Dockerized application ready for Hugging Face Spaces
+
+## 📦 Installation
 
 ### Prerequisites
 
-- Python 3.10+
+- Python 3.10 or higher
 - Google Chrome
 - Git
 
-### Backend Setup
+### Backend Installation
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/TALEB7/YouTube-Sentiment-Analysis.git
    cd YouTube-Sentiment-Analysis
    ```
-2. Create virtual environment:
+
+2. Create a virtual environment:
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   # On Windows:
+   venv\Scripts\activate
+   # On Linux/Mac:
+   source venv/bin/activate
    ```
+
 3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-4. Train the model (if not already trained):
+
+4. Initialize project structure (optional):
+   ```bash
+   python setup.py
+   ```
+
+5. Download and prepare data:
    ```bash
    python src/data/download_data.py
    python src/data/process_data.py
+   ```
+
+6. Train the model:
+   ```bash
    python src/models/train_model.py
    ```
-5. Run the API:
+   ⚠️ **Note**: Training may take several minutes depending on your machine.
+
+7. Run the API:
    ```bash
    python -m uvicorn src.api.main:app --reload
    ```
+   The API will be accessible at `http://127.0.0.1:8000`
 
-### Chrome Extension Setup
+### Chrome Extension Installation
 
-1. Open Chrome and navigate to `chrome://extensions/`.
-2. Enable "Developer mode" (top right).
-3. Click "Load unpacked".
-4. Select the `chrome-extension` folder in this project.
+1. Open Chrome and go to `chrome://extensions/`
+2. Enable "Developer mode" (top right)
+3. Click "Load unpacked extension"
+4. Select the `chrome-extension` folder from this project
 
-## Usage
+## 🚀 Usage
 
-1. Ensure the API is running (locally or on Hugging Face).
-2. Go to a YouTube video page.
-3. Scroll down to load some comments.
-4. Click the extension icon.
-5. Click "Analyze Comments".
-6. View the sentiment distribution and individual comment analysis.
+### Using the Chrome Extension
 
-## Deployment
+1. Make sure the API is running (locally or on Hugging Face)
+2. Go to a YouTube video page
+3. Scroll to load comments
+4. Click the extension icon
+5. Click "Analyze Comments"
+6. View the sentiment distribution and analysis of each comment
+
+### Testing the API Manually
+
+You can test the API with the provided script:
+```bash
+python test_api.py
+```
+
+Or use curl:
+```bash
+curl -X POST "http://127.0.0.1:8000/predict_batch" \
+  -H "Content-Type: application/json" \
+  -d '{"comments": [{"id": "1", "text": "This video is great!"}]}'
+```
+
+## 📊 Project Structure
+
+```
+YouTube-Sentiment-Analysis/
+├── src/
+│   ├── api/           # FastAPI
+│   ├── data/          # Data processing scripts
+│   └── models/        # Training scripts
+├── chrome-extension/  # Chrome extension
+├── data/             # Data (raw and processed)
+├── models/           # Trained models
+├── app.py            # Entry point for Hugging Face
+├── Dockerfile        # Docker configuration
+├── requirements.txt  # Python dependencies
+└── README.md         # This file
+```
+
+## 🐳 Deployment on Hugging Face Spaces
 
 To deploy on Hugging Face Spaces:
 
-1. Create a new Space (SDK: Docker).
-2. Upload the contents of this repository (ensure `models/sentiment_model.joblib` is included).
-3. The Space will build and run the API.
-4. Update the `apiUrl` in `chrome-extension/popup.js` to your Space URL.
+1. Create a new Space (SDK: Docker)
+2. Upload the repository contents
+   - ⚠️ **Important**: Include the `models/sentiment_model.joblib` file (or train it during build)
+3. The Space will build and launch the API automatically
+4. Update the URL in `chrome-extension/popup.js`:
+   ```javascript
+   const apiUrl = "https://your-space.hf.space/predict_batch";
+   ```
 
-## Author
-- TALEB Sami
+## 🔧 Configuration
+
+Main parameters are in `config.py`. You can modify:
+- File paths
+- Model parameters
+- API URLs
+
+## 📝 Notes
+
+- The model is trained on Reddit data, so it may not be perfect for YouTube
+- The Chrome extension may need adjustments if YouTube changes its HTML structure
+- For better performance, we could use a pre-trained model (BERT, etc.)
+
+## 🐛 Known Issues
+
+- If the extension doesn't find comments, make sure you've scrolled to load them
+- The model may take a few seconds to load when starting the API
+- On Hugging Face, make sure the model is included in the build
+
+## 👤 Author
+
+- **FARDAOUI Ilyas**
+
 
