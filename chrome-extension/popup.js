@@ -34,17 +34,22 @@ document.addEventListener("DOMContentLoaded", function () {
         );
       }
 
-      // Prepare payload
+      // Prepare data for API
+      // Keep texts in memory to display later
+      const commentsData = comments.map((text, index) => ({
+        id: index.toString(),
+        text: text,
+      }));
+      
       const payload = {
-        comments: comments.map((text, index) => ({
-          id: index.toString(),
-          text: text,
-        })),
+        comments: commentsData,
       };
 
-      // Call API
-      // Note: In production, replace with your Hugging Face URL
+      // API call
+      // TODO: Change URL for your Hugging Face deployment
+      // For local testing: http://127.0.0.1:8000/predict_batch
       const apiUrl = "https://has1elb-youtube-sentiment-analysis.hf.space/predict_batch";
+      // const apiUrl = "http://127.0.0.1:8000/predict_batch";  // For local testing
 
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -95,22 +100,23 @@ document.addEventListener("DOMContentLoaded", function () {
         pred.sentiment === 1 ? "pos" : pred.sentiment === -1 ? "neg" : "neu";
       div.className = `comment-item ${sentimentClass}`;
 
-      // Find original text (we could pass it back from API but we have it in payload logic if we kept it)
-      // For simplicity, we rely on index matching or just display sentiment
-      // Better: API returns text or we map it.
-      // Let's assume we want to show text. The API response in schemas.py only has id, sentiment, confidence.
-      // We need to map back using ID.
-      // But wait, I don't have the text in the response.
-      // I should probably modify the API to return text or just map it here if I kept the original list.
-      // I'll map it here assuming order is preserved or using ID.
-
-      // Actually, I don't have the original text easily accessible here unless I stored it.
-      // Let's just show "Comment #ID: Sentiment" for now or store it.
-      // I'll store the comments in a variable.
-
-      div.textContent = `Comment ${pred.id}: ${getSentimentLabel(
-        pred.sentiment
-      )} (${(pred.confidence * 100).toFixed(1)}%)`;
+      // Display comment text with sentiment
+      const sentimentLabel = getSentimentLabel(pred.sentiment);
+      const confidencePct = (pred.confidence * 100).toFixed(1);
+      
+      // Create content with full text
+      const textSpan = document.createElement("span");
+      textSpan.className = "comment-text";
+      textSpan.textContent = pred.text.length > 100 
+        ? pred.text.substring(0, 100) + "..." 
+        : pred.text;
+      
+      const metaSpan = document.createElement("span");
+      metaSpan.className = "comment-meta";
+      metaSpan.textContent = ` [${sentimentLabel} - ${confidencePct}%]`;
+      
+      div.appendChild(textSpan);
+      div.appendChild(metaSpan);
       commentsList.appendChild(div);
     });
 
