@@ -92,6 +92,20 @@ button:hover {
   padding: 8px;
   border-bottom: 1px solid #eee;
   font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comment-text {
+  color: #333;
+  line-height: 1.4;
+}
+
+.comment-meta {
+  font-size: 10px;
+  color: #666;
+  font-weight: bold;
 }
 
 .comment-item:last-child {
