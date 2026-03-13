@@ -25,22 +25,16 @@ Table of Contents
 ## Project Overview
 -----------------
 
-### Introduction
-
 This project implements a complete MLOps pipeline to analyze the sentiment of YouTube comments. It includes:
 
 *   A Machine Learning model (Logistic Regression with TF-IDF) trained on Reddit data
 *   A FastAPI backend API to serve the model
 *   A Chrome extension for the user interface
 
-### Goals
-
 This project demonstrates how to put an ML model into production as part of an MLOps course.
 
 ## Architecture
 -------------
-
-### Components
 
 The project is organized into several components:
 
