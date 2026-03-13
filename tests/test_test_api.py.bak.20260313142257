@@ -1,24 +1,19 @@
-```python
 import pytest
 from unittest.mock import Mock, patch
 from your_module import test_api  # Replace 'your_module' with the actual module name
-import requests
 
 @pytest.fixture
 def mock_requests_get():
-    """Mock requests.get function."""
     with patch('requests.get') as mock_get:
         yield mock_get
 
 @pytest.fixture
 def mock_requests_post():
-    """Mock requests.post function."""
     with patch('requests.post') as mock_post:
         yield mock_post
 
 def test_test_api_success(mock_requests_get, mock_requests_post):
     """Test test_api function with successful API responses."""
-    # Mock successful API responses
     mock_get = mock_requests_get
     mock_post = mock_requests_post
 
@@ -35,90 +30,48 @@ def test_test_api_success(mock_requests_get, mock_requests_post):
         ]
     }
 
-    # Call test_api function
     test_api()
 
 def test_test_api_connection_error(mock_requests_get):
     """Test test_api function with connection error."""
-    # Mock connection error
     mock_get = mock_requests_get
+
     mock_get.side_effect = requests.exceptions.ConnectionError
 
-    # Test that test_api raises SystemExit
     with pytest.raises(SystemExit):
         test_api()
 
 def test_test_api_health_check_error(mock_requests_get):
     """Test test_api function with health check error."""
-    # Mock health check error
     mock_get = mock_requests_get
+
     mock_get.return_value.status_code = 500
     mock_get.return_value.json.return_value = {'error': 'Internal Server Error'}
 
-    # Test that test_api raises SystemExit
     with pytest.raises(SystemExit):
         test_api()
 
 def test_test_api_batch_prediction_error(mock_requests_post):
     """Test test_api function with batch prediction error."""
-    # Mock batch prediction error
     mock_post = mock_requests_post
+
     mock_post.return_value.status_code = 500
     mock_post.return_value.text = 'Internal Server Error'
 
-    # Test that test_api raises SystemExit
     with pytest.raises(SystemExit):
         test_api()
 
 def test_test_api_invalid_base_url():
     """Test test_api function with invalid base URL."""
-    # Test that test_api raises SystemExit
     with pytest.raises(SystemExit):
         test_api(base_url='invalid_url')
 
 def test_test_api_no_base_url():
     """Test test_api function without base URL."""
-    # Test that test_api raises SystemExit
     with pytest.raises(SystemExit):
         test_api(base_url=None)
 
 def test_test_api_empty_base_url():
     """Test test_api function with empty base URL."""
-    # Test that test_api raises SystemExit
     with pytest.raises(SystemExit):
         test_api(base_url='')
-```
-
-```python
-# your_module.py
-import sys
-import requests
-
-def test_api(base_url='https://api.example.com'):
-    """
-    Test API function.
-
-    Args:
-        base_url (str): Base URL of the API. Defaults to 'https://api.example.com'.
-
-    Raises:
-        SystemExit: If the API returns an error or if the base URL is invalid.
-    """
-    # Validate base URL
-    if not base_url:
-        raise SystemExit('Invalid base URL')
-
-    # Make health check request
-    try:
-        response = requests.get(base_url + '/health')
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        raise SystemExit('Health check error') from e
-
-    # Make batch prediction request
-    try:
-        response = requests.post(base_url + '/predict', json={'text': 'This is a test comment'})
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        raise SystemExit('Batch prediction error') from e
-```
