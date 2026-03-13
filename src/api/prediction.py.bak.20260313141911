@@ -1,44 +1,21 @@
-```python
 import joblib
 import os
 import numpy as np
 from pathlib import Path
 
-class SentimentModelService:
-    """
-    Service for loading and using a sentiment analysis model.
-    """
-
+class ModelService:
     def __init__(self):
-        """
-        Initialize the model service.
-        """
         self.model = None
         self.load_model()
 
-    def _get_model_path(self) -> Path:
-        """
-        Get the path to the sentiment model.
-
-        Returns:
-            Path: The path to the sentiment model.
-        """
+    def load_model(self):
+        # Get the project root directory (parent of src)
         project_root = Path(__file__).parent.parent.parent
         model_path = project_root / "models" / "sentiment_model.joblib"
         
         # Also try relative path in case we're running from project root
         if not model_path.exists():
             model_path = Path("models") / "sentiment_model.joblib"
-        
-        return model_path
-
-    def load_model(self):
-        """
-        Load the sentiment model from the model path.
-
-        If the model is not found, print an error message and do not load the model.
-        """
-        model_path = self._get_model_path()
         
         if model_path.exists():
             try:
@@ -51,16 +28,7 @@ class SentimentModelService:
             print(f"Model not found at {model_path}")
             print("Please train the model first using: python src/models/train_model.py")
 
-    def predict_batch(self, texts: str or list) -> tuple:
-        """
-        Predict the sentiment of a batch of texts.
-
-        Args:
-            texts: A string or list of strings to predict the sentiment for.
-
-        Returns:
-            tuple: A tuple containing the predicted sentiment and the confidence score.
-        """
+    def predict_batch(self, texts):
         if not self.model:
             raise Exception("Model not loaded. Please train the model first.")
         
@@ -77,4 +45,3 @@ class SentimentModelService:
         confidences = np.max(probas, axis=1)
         
         return predictions, confidences
-```
