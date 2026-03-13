@@ -2,6 +2,7 @@
 Main entry point for the application
 Used for deployment on Hugging Face Spaces (port 7860)
 """
+
 from src.api.main import app
 import uvicorn
 
