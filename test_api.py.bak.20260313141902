@@ -1,45 +1,29 @@
-```python
 """
-API Test Script
-================
-
-This script tests the API's functionality by performing health checks and batch predictions.
+Test script for the API
+Allows checking that the API works correctly
 """
-
 import requests
 import json
 
-def test_api(base_url: str = "http://127.0.0.1:8000") -> None:
-    """
-    Test the API's health and perform a batch prediction.
-
-    Args:
-        base_url (str, optional): The base URL of the API. Defaults to "http://127.0.0.1:8000".
-
-    Returns:
-        None
-    """
-
+def test_api():
+    base_url = "http://127.0.0.1:8000"
+    
     # Test 1: Health check
     print("Test 1: Checking API status (/health)...")
     try:
-        # Send a GET request to the API's health endpoint
         resp = requests.get(f"{base_url}/health", timeout=5)
         print(f"Status: {resp.status_code}")
         print(f"Response: {json.dumps(resp.json(), indent=2, ensure_ascii=False)}")
     except requests.exceptions.ConnectionError:
-        # Handle connection errors
         print("Error: API is not running!")
         print("Start it first: python -m uvicorn src.api.main:app --reload")
         return
     except Exception as e:
-        # Handle any other exceptions
         print(f"Error during health check: {e}")
         return
 
     # Test 2: Batch prediction
     print("\nTest 2: Sentiment prediction (/predict_batch)...")
-    # Define a payload with sample comments
     payload = {
         "comments": [
             {"id": "1", "text": "This video is amazing! I learned so much."},
@@ -51,7 +35,6 @@ def test_api(base_url: str = "http://127.0.0.1:8000") -> None:
     }
     
     try:
-        # Send a POST request to the API's batch prediction endpoint
         resp = requests.post(
             f"{base_url}/predict_batch", 
             json=payload,
@@ -59,7 +42,6 @@ def test_api(base_url: str = "http://127.0.0.1:8000") -> None:
         )
         print(f"Status: {resp.status_code}")
         if resp.status_code == 200:
-            # Parse the response JSON
             result = resp.json()
             print(f"\nStatistics:")
             print(f"  Total: {result['stats']['total']}")
@@ -67,17 +49,13 @@ def test_api(base_url: str = "http://127.0.0.1:8000") -> None:
             print(f"  Neutral: {result['stats']['neutral']} ({result['stats']['neutral_pct']}%)")
             print(f"  Negative: {result['stats']['negative']} ({result['stats']['negative_pct']}%)")
             print(f"\nDetailed predictions:")
-            # Iterate over the predictions and print them
             for pred in result['predictions']:
                 sentiment_label = "Positive" if pred['sentiment'] == 1 else ("Negative" if pred['sentiment'] == -1 else "Neutral")
                 print(f"  [{pred['id']}] {sentiment_label} ({pred['confidence']*100:.1f}%): {pred['text'][:50]}...")
         else:
-            # Handle non-200 status codes
             print(f"Error: {resp.text}")
     except Exception as e:
-        # Handle any other exceptions
         print(f"Error during prediction: {e}")
 
 if __name__ == "__main__":
     test_api()
-```
