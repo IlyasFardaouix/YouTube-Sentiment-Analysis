@@ -2,33 +2,16 @@
 
 [![GitHub](https://img.shields.io/badge/GitHub-TALEB7-blue)](https://github.com/TALEB7/YouTube-Sentiment-Analysis)
 
-## Table of Contents
-1. [Description](#description)
-2. [Architecture](#architecture)
-3. [Installation](#installation)
-    1. [Prerequisites](#prerequisites)
-    2. [Backend Installation](#backend-installation)
-    3. [Chrome Extension Installation](#chrome-extension-installation)
-4. [Usage](#usage)
-    1. [Using the Chrome Extension](#using-the-chrome-extension)
-    2. [Testing the API Manually](#testing-the-api-manually)
-5. [Project Structure](#project-structure)
-6. [Deployment on Hugging Face Spaces](#deployment-on-hugging-face-spaces)
-7. [Configuration](#configuration)
-8. [Notes](#notes)
-9. [Known Issues](#known-issues)
-10. [Author](#author)
+## 📋 Description
 
-## Description
 This project implements a complete MLOps pipeline to analyze the sentiment of YouTube comments. It includes:
-
 - A Machine Learning model (Logistic Regression with TF-IDF) trained on Reddit data
 - A FastAPI backend API to serve the model
 - A Chrome extension for the user interface
 
-This project demonstrates how to put an ML model into production as part of an MLOps course.
+This is a project done as part of an MLOps course, showing how to put an ML model into production.
 
-## Architecture
+## 🏗️ Architecture
 
 The project is organized into several components:
 
@@ -38,7 +21,7 @@ The project is organized into several components:
 - **Chrome Extension** (`chrome-extension/`): Extension to extract and analyze YouTube comments
 - **Deployment**: Dockerized application ready for Hugging Face Spaces
 
-## Installation
+## 📦 Installation
 
 ### Prerequisites
 
@@ -98,7 +81,7 @@ The project is organized into several components:
 3. Click "Load unpacked extension"
 4. Select the `chrome-extension` folder from this project
 
-## Usage
+## 🚀 Usage
 
 ### Using the Chrome Extension
 
@@ -123,7 +106,7 @@ curl -X POST "http://127.0.0.1:8000/predict_batch" \
   -d '{"comments": [{"id": "1", "text": "This video is great!"}]}'
 ```
 
-## Project Structure
+## 📊 Project Structure
 
 ```
 YouTube-Sentiment-Analysis/
@@ -140,7 +123,7 @@ YouTube-Sentiment-Analysis/
 └── README.md         # This file
 ```
 
-## Deployment on Hugging Face Spaces
+## 🐳 Deployment on Hugging Face Spaces
 
 To deploy on Hugging Face Spaces:
 
@@ -153,26 +136,27 @@ To deploy on Hugging Face Spaces:
    const apiUrl = "https://your-space.hf.space/predict_batch";
    ```
 
-## Configuration
+## 🔧 Configuration
 
 Main parameters are in `config.py`. You can modify:
-
 - File paths
 - Model parameters
 - API URLs
 
-## Notes
+## 📝 Notes
 
 - The model is trained on Reddit data, so it may not be perfect for YouTube
 - The Chrome extension may need adjustments if YouTube changes its HTML structure
 - For better performance, we could use a pre-trained model (BERT, etc.)
 
-## Known Issues
+## 🐛 Known Issues
 
 - If the extension doesn't find comments, make sure you've scrolled to load them
 - The model may take a few seconds to load when starting the API
 - On Hugging Face, make sure the model is included in the build
 
-## Author
+## 👤 Author
 
 - **FARDAOUI Ilyas**
+
+
