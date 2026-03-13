@@ -3,7 +3,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-TALEB7-blue)](https://github.com/TALEB7/YouTube-Sentiment-Analysis)
 
 ## Table of Contents
-1. [Project Overview](#project-overview)
+1. [Description](#description)
 2. [Architecture](#architecture)
 3. [Installation](#installation)
     1. [Prerequisites](#prerequisites)
@@ -19,7 +19,7 @@
 9. [Known Issues](#known-issues)
 10. [Author](#author)
 
-## Project Overview
+## Description
 This project implements a complete MLOps pipeline to analyze the sentiment of YouTube comments. It includes:
 
 - A Machine Learning model (Logistic Regression with TF-IDF) trained on Reddit data
@@ -32,7 +32,7 @@ This project demonstrates how to put an ML model into production as part of an M
 
 The project is organized into several components:
 
-- **Machine Learning Engine** (`src/models/`): Sentiment classification model (Logistic Regression + TF-IDF)
+- **ML Engine** (`src/models/`): Sentiment classification model (Logistic Regression + TF-IDF)
 - **Data Processing** (`src/data/`): Scripts to download and process data
 - **Backend API** (`src/api/`): FastAPI with `/predict_batch` endpoint
 - **Chrome Extension** (`chrome-extension/`): Extension to extract and analyze YouTube comments
